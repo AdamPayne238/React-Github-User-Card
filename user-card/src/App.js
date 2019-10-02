@@ -3,12 +3,18 @@ import axios from 'axios';
 
 import './App.css';
 
-class App extends Component{
-  state = {
-    users: [],
-    userText: 'Adam'
-  };
+import UserCard from "./UserCard";
+import UserList from "./UserList";
 
+class App extends Component{
+  constructor(){
+    super();
+    this.state = {
+      users: [],
+      followers: [],
+  }
+  };
+  
   componentDidMount(){
     axios
       .get('https://api.github.com/users/AdamPayne238')
@@ -18,9 +24,17 @@ class App extends Component{
           users: response.data
         });
       })
-      .catch(error => console.log(error));
+      .catch(error => console.log(error))
 
-      window.addEventListener('resize', this.handleResize);
+    axios
+      .get('https://api.github.com/users/AdamPayne238/followers')
+      .then(response => {
+        console.log("2nd Response Followers", response.data)
+        this.setState({
+          followers: response.data
+      });
+    }, [])
+    .catch(error => console.log(error))
   }
 
   handleChanges = event => {
@@ -29,46 +43,26 @@ class App extends Component{
     });
   };
 
-  fetchUsers = event => {
-    event.preventDefault();
-    axios
-      .get('https://api.github.com/users/AdamPayne238/followers')
-      .then(response => {
-        console.log("Response FetchUsers", response.data)
-        this.setState({
-          users: response.data
-        });
-      })
-      .catch(error => console.log(error));
-  };
-
-
   render(){
     return(
       <div className="App">
-        <h1>Github</h1>
-        <p>{this.state.userText}</p>
-        <p>{this.state.handleChanges}</p>
-        <button onClick={this.fetchUsers}>Fetch Users</button>
-        <div className="users">
-          {/* {this.state.users.map(user => (
-            <img width="200" src={user} key={user} alt={user} />
-          ))} */}
-        </div>
+  
+        <UserCard 
+        users={this.state.users}
+       
+        />
+        
+        
+        <UserList 
+        followers={this.state.followers}
+        users={this.state.users}
+        />
+      
       </div>
     )
   }
-
-
-
-
-
-
-
-
-
-
 }
 
-
 export default App;
+
+
