@@ -6,7 +6,11 @@ console.log("props", props)
         <div>
           {props.followers.map(followers => {
               return(
-               <p>{followers.login}</p>
+                <div className="followers">
+                    <img key={followers.login} src={followers.avatar_url} alt={followers.login} />
+                    <h1 key={followers.id}>{followers.login}</h1>
+                    {/* <p key={followers.id}>{followers.login}</p> */}
+                </div>
               )})}
         </div>
     );

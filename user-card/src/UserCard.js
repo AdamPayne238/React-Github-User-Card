@@ -11,7 +11,8 @@ const UserCard = props => (
           <p>{props.users.bio}</p>
           <p>{props.users.company}</p>
       
-        <p>{props.users.followers}</p>
+        <p>Followers: {props.users.followers}</p>
+        <p>Following: {props.users.following}</p>
         </div>
         )
 
